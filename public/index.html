@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SG Classes - BSc Physics Tuition</title>
+    <link rel="icon" href="https://placehold.co/32x32/000000/FFFFFF?text=SG" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for a clean look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8; /* Light background */
+            color: #333; /* Darker text for readability */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Styles for the custom modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+        /* Style for video modal content, wider to accommodate iframe */
+        .video-modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px; /* Wider for video */
+            text-align: center;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #007bff;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Specific style for YouTube iframe to be responsive */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg py-4 md:py-6">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="bg-white text-blue-600 rounded-full p-2 mr-3 shadow-md">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"></path></svg>
+                </div>
+                <h1 class="text-3xl font-bold">SG CLASSES</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6 items-center">
+                    <li><a href="#home" class="hover:text-blue-200 transition duration-300 font-medium">Home</a></li>
+                    <li><a href="#courses-enrollment-section" class="hover:text-blue-200 transition duration-300 font-medium">Courses</a></li>
+                    <li id="my-courses-nav-item" class="hidden"><a href="#my-courses-content-section" class="hover:text-blue-200 transition duration-300 font-medium">My Courses</a></li>
+                    <li><a href="#contact" class="hover:text-blue-200 transition duration-300 font-medium">Contact</a></li>
+                    <li id="auth-buttons" class="flex space-x-4 ml-6">
+                        </li>
+                    <li id="user-info" class="hidden flex items-center space-x-2 ml-6">
+                        </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="bg-blue-500 text-white py-16 md:py-24 text-center shadow-inner">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                Master BSc Physics with SG Classes
+            </h2>
+            <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">
+                Comprehensive tuition for Major (Hons.) & Minor Physics students, all semesters.
+            </p>
+            <button id="main-register-button" class="bg-white text-blue-600 hover:bg-blue-100 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                Register Now!
+            </button>
+        </div>
+    </section>
+
+    <section id="why-sg-classes" class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-bold text-gray-800 mb-10">Why Choose SG Classes?</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-xl shadow-md p-6 border border-gray-200 flex flex-col items-center">
+                    <div class="bg-blue-200 text-blue-700 p-3 rounded-full mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Expert-Led Teaching</h4>
+                    <p class="text-gray-600 text-center">Taught by SG Sir, MSc. Physics from RKMVCC (Rahara) with proven success in IIT JAM & CUET.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl shadow-md p-6 border border-gray-200 flex flex-col items-center">
+                    <div class="bg-purple-200 text-purple-700 p-3 rounded-full mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h10a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0H9m4 0h-4m-2 5h4m-4 4h4m6-4a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Flexible Learning Options</h4>
+                    <p class="text-gray-600 text-center">Both online and offline batches available to fit your schedule and preferences.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl shadow-md p-6 border border-gray-200 flex flex-col items-center">
+                    <div class="bg-green-200 text-green-700 p-3 rounded-full mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H2v-2a3 3 0 015.356-1.857M9 20v-2m3 2v-2m3 2v-2M9 10a6 6 0 016 6v2a2 2 0 002 2h2a2 2 0 002-2v-2a6 6 0 01-6-6V6a2 2 0 00-2-2H7a2 2 0 00-2 2v4a6 6 0 016 6v2a2 2 0 002 2h2a2 2 0 002-2v-2"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Integrated Exam Support</h4>
+                    <p class="text-gray-600 text-center">Special focus on IIT JAM, CUET, JEST, and other competitive exams, alongside graduation studies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="courses-enrollment-section" class="py-16 md:py-20 bg-gray-50">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-bold text-gray-800 mb-10">Our Comprehensive Courses</h3>
+
+            <div class="mb-12">
+                <h4 class="text-2xl font-semibold text-blue-700 mb-6">BSc Physics - Major (Hons.)</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 1</h5>
+                            <p class="text-gray-600 text-sm mb-4">Foundation of Physics, Mechanics, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="1">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 2</h5>
+                            <p class="text-gray-600 text-sm mb-4">Optics, Oscillations, Waves, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="2">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 3</h5>
+                            <p class="text-gray-600 text-sm mb-4">Electromagnetism I, Thermal Physics, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="3">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 4</h5>
+                            <p class="text-gray-600 text-sm mb-4">Electromagnetism II, Statistical Mechanics, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="4">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 5</h5>
+                            <p class="text-gray-600 text-sm mb-4">Quantum Mechanics I, Solid State Physics I, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="5">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 6</h5>
+                            <p class="text-gray-600 text-sm mb-4">Quantum Mechanics II, Nuclear Physics, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="6">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 7</h5>
+                            <p class="text-gray-600 text-sm mb-4">Advanced Electrodynamics, Particle Physics, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="7">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 8</h5>
+                            <p class="text-gray-600 text-sm mb-4">General Relativity, Cosmology, Project Work, etc.</p>
+                        </div>
+                        <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="8">Enroll</button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-2xl font-semibold text-purple-700 mb-6">BSc Physics - Minor</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-purple-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 1</h5>
+                            <p class="text-gray-600 text-sm mb-4">Basic Physics Concepts, General Principles.</p>
+                        </div>
+                        <button class="enroll-btn bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300 mt-4" data-course-type="Minor" data-semester="1">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-purple-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 2</h5>
+                            <p class="text-gray-600 text-sm mb-4">Basic Electromagnetism, Thermodynamics.</p>
+                        </div>
+                        <button class="enroll-btn bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300 mt-4" data-course-type="Minor" data-semester="2">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-purple-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 3</h5>
+                            <p class="text-gray-600 text-sm mb-4">Waves and Optics, Modern Physics.</p>
+                        </div>
+                        <button class="enroll-btn bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300 mt-4" data-course-type="Minor" data-semester="3">Enroll</button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-purple-100 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 4</h5>
+                            <p class="text-gray-600 text-sm mb-4">Applied Physics, Fundamental Theories.</p>
+                        </div>
+                        <button class="enroll-btn bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300 mt-4" data-course-type="Minor" data-semester="4">Enroll</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="my-courses-content-section" class="hidden py-16 md:py-20 bg-gray-50">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-bold text-gray-800 mb-10">My Enrolled Courses Content</h3>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-purple-200 mb-8 text-left">
+                <h4 class="text-2xl font-semibold text-purple-700 mb-4">E-Books</h4>
+                <div id="ebooks-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-green-200 text-left">
+                <h4 class="text-2xl font-semibold text-green-700 mb-4">My Enrolled Courses & Materials</h4>
+                <div id="my-specific-course-content" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <p class="text-gray-600" id="no-specific-materials-message">Enroll in a course to see your specific live class, recorded classes, and study materials here.</p>
+                    </div>
+            </div>
+
+            <div class="mt-8">
+                <button class="ask-ai-btn w-full bg-indigo-500 text-white py-3 px-6 rounded-md hover:bg-indigo-600 transition duration-300 text-lg">
+                    Ask AI Explainer ✨
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="contact" class="py-16 md:py-20 bg-gray-100">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-bold text-gray-800 mb-10">Get in Touch</h3>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <div class="bg-white rounded-xl shadow-md p-6 w-full md:w-1/2 lg:w-1/3 border border-gray-200">
+                    <h4 class="text-xl font-semibold text-blue-600 mb-4">Contact Details</h4>
+                    <p class="text-gray-700 mb-2 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.774a11.037 11.037 0 006.103 6.103l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+                        Call / WhatsApp: <span class="font-bold ml-2">+917602877889</span>
+                    </p>
+                    <p class="text-gray-700 mb-2 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                        Email: <span class="font-bold ml-2">sudipto0106@gmail.com</span>
+                    </p>
+                    <p class="text-gray-700 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+                        Location: Gazinadaspur, Nearest Railway Station: Khanyan, Hooghly, WB, India (For Offline Classes)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>© 2024 SG Classes. All rights reserved.</p>
+            <p class="mt-2">Clarity in Concepts, Excellence in Results.</p>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-login-modal">×</span>
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Login</h3>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="login-email" class="block text-left text-gray-700 font-medium mb-1">Email:</label>
+                    <input type="email" id="login-email" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="your.email@example.com" required>
+                </div>
+                <div>
+                    <label for="login-password" class="block text-left text-gray-700 font-medium mb-1">Password:</label>
+                    <input type="password" id="login-password" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="********" required>
+                </div>
+                <button type="submit" id="login-submit-btn" class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+            </form>
+            <p class="mt-4 text-gray-600">
+                New student? <button id="toggle-to-register" class="text-blue-600 hover:underline font-semibold">Register Here</button>
+            </p>
+            <div id="login-message" class="mt-4 text-red-600 font-medium"></div>
+        </div>
+    </div>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content text-left">
+            <span class="close-button" id="close-register-modal">×</span>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Register for SG Classes</h3>
+            <p class="text-gray-600 mb-6">Key to your personalized study. Offline and online both batches available. Affordable fees, save time with online studies. Clear concepts. Special focus on IIT JAM, CUET, JEST etc. beside graduation exams.</p>
+            <form id="register-form" class="space-y-4">
+                <div>
+                    <label for="reg-name" class="block text-gray-700 font-medium mb-1">Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="reg-name" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="reg-email" class="block text-gray-700 font-medium mb-1">E-mail <span class="text-red-500">*</span></label>
+                    <input type="email" id="reg-email" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="reg-password" class="block text-gray-700 font-medium mb-1">Create Password <span class="text-red-500">*</span></label>
+                    <input type="password" id="reg-password" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">Mode of Study (Batch) <span class="text-red-500">*</span></label>
+                    <div class="space-y-2">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="study-mode" value="Offline-Major" class="form-radio text-blue-600" required>
+                            <span class="ml-2">Offline- Major (Only available for Colleges under Burdwan University)</span>
+                        </label><br>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="study-mode" value="Offline-Minor" class="form-radio text-blue-600">
+                            <span class="ml-2">Offline- Minor (Only available for Colleges under Burdwan University)</span>
+                        </label><br>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="study-mode" value="Online-Major" class="form-radio text-blue-600">
+                            <span class="ml-2">Online- Major (Hons.)</span>
+                        </label><br>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="study-mode" value="Online-Minor" class="form-radio text-blue-600">
+                            <span class="ml-2">Online- Minor</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label for="reg-address" class="block text-gray-700 font-medium mb-1">Address (For Offline Students)</label>
+                    <textarea id="reg-address" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[60px]"></textarea>
+                </div>
+                <div>
+                    <label for="reg-university" class="block text-gray-700 font-medium mb-1">University <span class="text-red-500">*</span></label>
+                    <select id="reg-university" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">Select your University</option>
+                        <option value="Burdwan University">Burdwan University</option>
+                        <option value="Kalyani University">Kalyani University</option>
+                        <option value="Calcutta University">Calcutta University</option>
+                        <option value="West Bengal State University">West Bengal State University</option>
+                        <option value="Rabindra Bharati University">Rabindra Bharati University</option>
+                        <option value="Vidyasagar University">Vidyasagar University</option>
+                        <option value="Other">Other:</option>
+                    </select>
+                </div>
+                <div id="other-university-div" class="hidden">
+                    <label for="other-university-input" class="block text-gray-700 font-medium mb-1">Please specify your University:</label>
+                    <input type="text" id="other-university-input" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="reg-college" class="block text-gray-700 font-medium mb-1">College</label>
+                    <input type="text" id="reg-college" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="reg-semester" class="block text-gray-700 font-medium mb-1">Semester <span class="text-red-500">*</span></label>
+                    <select id="reg-semester" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">Select your Semester</option>
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                        <option value="4th">4th</option>
+                        <option value="5th">5th</option>
+                        <option value="6th">6th</option>
+                        <option value="7th">7th</option>
+                        <option value="8th">8th</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="reg-contact" class="block text-gray-700 font-medium mb-1">Contact/WhatsApp Number <span class="text-red-500">*</span></label>
+                    <input type="tel" id="reg-contact" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <button type="submit" id="register-submit-btn" class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition duration-300">Register</button>
+            </form>
+            <div id="register-message" class="mt-4 text-red-600 font-medium"></div>
+        </div>
+    </div>
+
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-message-modal">×</span>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4" id="message-modal-title"></h3>
+            <p class="text-gray-700 mb-6" id="message-modal-body"></p>
+            <button id="message-modal-ok-btn" class="bg-blue-600 text-white py-2 px-6 rounded-md font-semibold hover:bg-blue-700 transition duration-300">OK</button>
+        </div>
+    </div>
+
+    <div id="ai-query-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-ai-query-modal">×</span>
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Ask the AI Explainer ✨</h3>
+            <p id="ai-modal-context" class="text-gray-600 text-sm mb-4"></p>
+            <textarea id="ai-query-input" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[80px] mb-4" placeholder="e.g., Explain the photoelectric effect in simple terms."></textarea>
+            <button id="ai-submit-btn" class="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 transition duration-300">Get Explanation</button>
+            <div id="ai-response-area" class="mt-6 p-4 bg-gray-50 rounded-md text-left text-gray-800 border border-gray-200 max-h-60 overflow-y-auto">
+                <p class="text-gray-500">Your AI explanation will appear here...</p>
+            </div>
+            <div id="ai-loading-spinner" class="hidden mt-4 flex justify-center">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="video-modal" class="modal">
+        <div class="video-modal-content">
+            <span class="close-button" id="close-video-modal">×</span>
+            <div class="video-container">
+                <iframe id="video-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase variables
+        let app;
+        let db;
+        let auth;
+        let userId = null;
+        let isAuthReady = false; // Flag to ensure auth is ready before Firestore ops
+        let hasEnrolledCourses = false; // Flag to track if user has any enrolled courses
+
+        // YOUR ACTUAL FIREBASE CONFIGURATION GOES HERE
+        // Paste your specific appId here:
+        const appId = '1:922766409483:web:b68fcad43be17871656c0e';
+
+        // Paste your entire firebaseConfig object here:
+        const firebaseConfig = {
+          apiKey: "AIzaSyCO4OuGHlnelszOf31LOsl5I_SvKUblMkA",
+          authDomain: "sg-classes-10a2f.firebaseapp.com",
+          projectId: "sg-classes-10a2f",
+          storageBucket: "sg-classes-10a2f.firebasestorage.app",
+          messagingSenderId: "922766409483",
+          appId: "1:922766409483:web:b68fcad43be17871656c0e", // This appId should match the appId above!
+          measurementId: "G-EGJXPLCTPM"
+        };
+
+
+        // Global UI elements
+        const loginModal = document.getElementById('login-modal');
+        const closeLoginModalBtn = document.getElementById('close-login-modal');
+        const loginForm = document.getElementById('login-form');
+        const loginMessage = document.getElementById('login-message');
+        const toggleToRegisterBtn = document.getElementById('toggle-to-register');
+
+        const registerModal = document.getElementById('register-modal');
+        const closeRegisterModalBtn = document.getElementById('close-register-modal');
+        const registerForm = document.getElementById('register-form');
+        const registerMessage = document.getElementById('register-message');
+        const regUniversitySelect = document.getElementById('reg-university');
+        const otherUniversityDiv = document.getElementById('other-university-div');
+        const otherUniversityInput = document.getElementById('other-university-input');
+
+        const mainRegisterButton = document.getElementById('main-register-button');
+        const authButtonsContainer = document.getElementById('auth-buttons');
+        const userInfoContainer = document.getElementById('user-info');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        // Main content sections
+        const homeSection = document.getElementById('home');
+        const whySgClassesSection = document.getElementById('why-sg-classes');
+        const coursesEnrollmentSection = document.getElementById('courses-enrollment-section');
+        const myCoursesContentSection = document.getElementById('my-courses-content-section');
+        const contactSection = document.getElementById('contact');
+
+        // My Courses specific elements
+        const myCoursesNavItem = document.getElementById('my-courses-nav-item');
+        const ebooksList = document.getElementById('ebooks-list');
+        const mySpecificCourseContent = document.getElementById('my-specific-course-content'); // Changed ID
+        const noSpecificMaterialsMessage = document.getElementById('no-specific-materials-message');
+
+        // Message Modal elements
+        const messageModal = document.getElementById('message-modal');
+        const closeMessageModalBtn = document.getElementById('close-message-modal');
+        const messageModalTitle = document.getElementById('message-modal-title');
+        const messageModalBody = document.getElementById('message-modal-body');
+        const messageModalOkBtn = document.getElementById('message-modal-ok-btn');
+
+        // AI Query Modal elements
+        const aiQueryModal = document.getElementById('ai-query-modal');
+        const closeAiQueryModalBtn = document.getElementById('close-ai-query-modal');
+        const aiQueryInput = document.getElementById('ai-query-input');
+        const aiSubmitBtn = document.getElementById('ai-submit-btn');
+        const aiResponseArea = document.getElementById('ai-response-area');
+        const aiLoadingSpinner = document.getElementById('ai-loading-spinner');
+        const aiModalContext = document.getElementById('ai-modal-context');
+
+        // Video Modal elements
+        const videoModal = document.getElementById('video-modal');
+        const closeVideoModalBtn = document.getElementById('close-video-modal');
+        const videoIframe = document.getElementById('video-iframe');
+
+
+        // Course-specific content data (Live Class, Recorded Videos, Study Materials)
+        const courseContentData = {
+            "Major": {
+                "1": {
+                    liveClassLink: "https://meet.google.com/major-sem1-live",
+                    recordedVideos: [
+                        { title: "Major Sem 1 - Introduction to Physics", date: "Jan 10, 2024", youtubeId: "dQw4w9WgXcQ" }
+                    ],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_1_STUDY_MATERIALS_LINK"
+                },
+                "2": {
+                    liveClassLink: "https://meet.google.com/major-sem2-live",
+                    recordedVideos: [
+                        { title: "Test Video for Major Semester 2", date: "May 23, 2025", youtubeId: "3" },
+                        { title: "Major Sem 2 - Optics Fundamentals", date: "Feb 15, 2024", youtubeId: "VIDEO_ID_MAJOR_SEM2_OPTICS" }
+                    ],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_2_STUDY_MATERIALS_LINK"
+                },
+                "3": {
+                    liveClassLink: "https://meet.google.com/major-sem3-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_3_STUDY_MATERIALS_LINK"
+                },
+                "4": {
+                    liveClassLink: "https://meet.google.com/major-sem4-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_4_STUDY_MATERIALS_LINK"
+                },
+                "5": {
+                    liveClassLink: "https://meet.google.com/major-sem5-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_5_STUDY_MATERIALS_LINK"
+                },
+                "6": {
+                    liveClassLink: "https://meet.google.com/major-sem6-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_6_STUDY_MATERIALS_LINK"
+                },
+                "7": {
+                    liveClassLink: "https://meet.google.com/major-sem7-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_7_STUDY_MATERIALS_LINK"
+                },
+                "8": {
+                    liveClassLink: "https://meet.google.com/major-sem8-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_8_STUDY_MATERIALS_LINK"
+                }
+            },
+            "Minor": {
+                "1": {
+                    liveClassLink: "https://meet.google.com/minor-sem1-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_1_STUDY_MATERIALS_LINK"
+                },
+                "2": {
+                    liveClassLink: "https://meet.google.com/minor-sem2-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_2_STUDY_MATERIALS_LINK"
+                },
+                "3": {
+                    liveClassLink: "https://meet.google.com/minor-sem3-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_3_STUDY_MATERIALS_LINK"
+                },
+                "4": {
+                    liveClassLink: "https://meet.google.com/minor-sem4-live",
+                    recordedVideos: [],
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_4_STUDY_MATERIALS_LINK"
+                }
+            }
+        };
+
+        // Universal E-Books Data
+        const ebooksData = [
+            { topic: "Astrophysics", link: "https://drive.google.com/drive/folders/1nOqRX0VGGaZBVmhZGYvO8if57t-MRgp5?usp=drive_link" },
+            { topic: "Atomic and Nuclear Physics", link: "https://drive.google.com/drive/folders/1S3J4AkXI1wz-vIE6JSRTRZi4Vj-3UoUD?usp=drive_link" },
+            { topic: "Condensed Matter and Solid State Physics", link: "https://drive.google.com/drive/folders/1Y0h8jW2-wdIqWXjUVSiZ4c8pITC7TfU9?usp=drive_link" },
+            { topic: "Electronics", link: "https://drive.google.com/drive/folders/1xag-C_pKHgxaCnjxVmo_jFZFSMCu8Y3S?usp=sharing" },
+            { topic: "Electrostatics and Magnetism", link: "https://drive.google.com/drive/folders/1aZnU_JuL_wJlJnW91HfGlG92X6lirr4A?usp=sharing" },
+            { topic: "High Energy Physics", link: "https://drive.google.com/drive/folders/1924yCocVMX8PGAtz7aoaN5Qx07MApykn?usp=drive_link" },
+            { topic: "Mathematical Physics", link: "https://drive.google.com/drive/folders/1iHOjLELVxALBQ_URDp0m6P-AaQ2DArg5?usp=drive_link" },
+            { topic: "Classical Mechanics", link: "https://drive.google.com/drive/folders/1w2tAmK_2ZIt41WAduKJOHXxFXAn-uJLS?usp=drive_link" },
+            { topic: "Quantum Mechanics and Modern Physics (includes Relativity)", link: "https://drive.google.com/drive/folders/1lWcfz8cbn6z3fv5lK0UsuFO9UBpr2Btf?usp=drive_link" },
+            { topic: "Statistical mechanics, Thermodynamics and KTG.", link: "https://drive.google.com/drive/folders/1C45nRYtGTOW3pbJ4cRxl3Tuz-Uw1FitX?usp=drive_link" },
+            { topic: "Waves and Optics", link: "https://drive.google.com/drive/folders/1iHOjLELVxALBQ_URDp0m6P-AaQ2DArg5?usp=drive_link" },
+            { topic: "Universal Books and Formula Sheets", link: "https://drive.google.com/drive/folders/1ayArWsegxWJRjdDcRVdCpPHy0NtIDUPK?usp=drive_link" }
+        ];
+
+
+        // Function to show custom message modal
+        function showMessageModal(title, message) {
+            messageModalTitle.innerHTML = title; // Use innerHTML to allow for links
+            messageModalBody.innerHTML = message; // Use innerHTML to allow for links
+            messageModal.style.display = 'flex';
+        }
+
+        // Function to show loading spinner
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+        }
+
+        // Function to hide loading spinner
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+
+        // Function to show AI Query Modal
+        function showAiQueryModal(courseType = 'General', semester = 'N/A') { // Default values if called from general AI button
+            aiModalContext.textContent = `Asking about a concept from ${courseType} Physics - Semester ${semester}.`;
+            aiQueryInput.value = ''; // Clear previous input
+            aiResponseArea.innerHTML = '<p class="text-gray-500">Your AI explanation will appear here...</p>'; // Clear previous response
+            aiLoadingSpinner.classList.add('hidden'); // Hide spinner
+            aiQueryModal.style.display = 'flex';
+        }
+
+        // Function to hide AI Query Modal
+        function hideAiQueryModal() {
+            aiQueryModal.style.display = 'none';
+        }
+
+        // Function to show video modal
+        function showVideoModal(youtubeId) {
+            videoIframe.src = `http://www.youtube.com/embed/${youtubeId}?autoplay=1`; // Autoplay video
+            videoModal.style.display = 'flex';
+        }
+
+        // Function to hide video modal
+        function hideVideoModal() {
+            videoIframe.src = ''; // Stop video playback
+            videoModal.style.display = 'none';
+        }
+
+        // Function to show a specific section and hide others
+        function showSection(sectionToShow) {
+            const sections = [homeSection, whySgClassesSection, coursesEnrollmentSection, myCoursesContentSection, contactSection];
+            sections.forEach(section => {
+                if (section === sectionToShow) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+        // Initialize Firebase
+        async function initializeFirebase() {
+            showLoading();
+            try {
+                // The appId and firebaseConfig are now directly defined above
+                // No need for typeof __app_id or __firebase_config checks here
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Authenticate with custom token or anonymously
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        isAuthReady = true;
+                        console.log("Firebase Auth Ready. User ID:", userId);
+                        updateAuthUI(user);
+                        await checkAndPopulateMyCourses(); // Check enrollment and show/hide My Courses nav item
+                        showSection(homeSection); // Default to home on login
+                    } else {
+                        userId = null;
+                        isAuthReady = true;
+                        console.log("No user signed in.");
+                        updateAuthUI(null);
+                        myCoursesNavItem.classList.add('hidden'); // Hide My Courses nav item
+                        showSection(homeSection); // Default to home on logout
+                    }
+                    hideLoading();
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+                showMessageModal("Initialization Error", `Failed to initialize Firebase: ${error.message}`);
+                hideLoading();
+            }
+        }
+
+        // Update UI based on authentication state
+        function updateAuthUI(user) {
+            if (user) {
+                authButtonsContainer.classList.add('hidden');
+                userInfoContainer.classList.remove('hidden');
+                userInfoContainer.innerHTML = `
+                    <span class="text-white text-sm">Welcome, ${user.email || 'Guest'}!</span>
+                    <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md font-medium transition duration-300">Logout</button>
+                    <span class="text-white text-xs ml-2">User ID: ${user.uid}</span>
+                `;
+                document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            } else {
+                authButtonsContainer.classList.remove('hidden');
+                userInfoContainer.classList.add('hidden');
+                authButtonsContainer.innerHTML = `
+                    <button id="login-btn" class="bg-white text-blue-600 hover:bg-blue-100 py-2 px-4 rounded-md font-medium transition duration-300">Login</button>
+                    <button id="register-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md font-medium transition duration-300">Register</button>
+                `;
+                document.getElementById('login-btn').addEventListener('click', showLoginModal);
+                document.getElementById('register-btn').addEventListener('click', showRegisterModal);
+            }
+        }
+
+        // Show Login Modal
+        function showLoginModal() {
+            loginMessage.textContent = ''; // Clear previous messages
+            document.getElementById('login-email').value = ''; // Clear email field
+            document.getElementById('login-password').value = ''; // Clear password field
+            loginModal.style.display = 'flex';
+        }
+
+        // Show Register Modal
+        function showRegisterModal() {
+            registerMessage.textContent = ''; // Clear previous messages
+            registerForm.reset(); // Clear form fields
+            otherUniversityDiv.classList.add('hidden'); // Hide other university input
+            registerModal.style.display = 'flex';
+        }
+
+        // Handle Login Form Submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                loginMessage.textContent = "Please enter both email and password.";
+                return;
+            }
+
+            showLoading();
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showMessageModal("Success", "Logged in successfully!");
+                loginModal.style.display = 'none'; // Close modal on success
+            } catch (error) {
+                console.error("Login error:", error);
+                let errorMessage = "An unknown error occurred.";
+                if (error.code) {
+                    switch (error.code) {
+                        case 'auth/invalid-email':
+                        case 'auth/user-not-found':
+                        case 'auth/wrong-password':
+                            errorMessage = 'Invalid email or password.';
+                            break;
+                        default:
+                            errorMessage = `Login failed: ${error.message}`;
+                    }
+                }
+                loginMessage.textContent = errorMessage;
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // Handle Register Form Submission
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const studyMode = document.querySelector('input[name="study-mode"]:checked')?.value;
+            const address = document.getElementById('reg-address').value;
+            let university = document.getElementById('reg-university').value;
+            const college = document.getElementById('reg-college').value;
+            const semester = document.getElementById('reg-semester').value;
+            const contact = document.getElementById('reg-contact').value;
+
+            if (university === 'Other') {
+                university = otherUniversityInput.value.trim();
+            }
+
+            // Basic validation for required fields
+            if (!name || !email || !password || !studyMode || !university || !semester || !contact) {
+                registerMessage.textContent = "Please fill in all required fields.";
+                return;
+            }
+
+            showLoading();
+            try {
+                // 1. Create Firebase User
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const newUser = userCredential.user;
+                const newUserId = newUser.uid;
+
+                // 2. Store additional user data in Firestore
+                const userProfileRef = doc(db, `artifacts/${appId}/users/${newUserId}/profile`, "details"); // Use the correct appId variable
+                await setDoc(userProfileRef, {
+                    name: name,
+                    email: email,
+                    studyMode: studyMode,
+                    address: address,
+                    university: university,
+                    college: college,
+                    semester: semester,
+                    contact: contact,
+                    registeredAt: new Date()
+                });
+
+                // Custom success message with WhatsApp link
+                const successTitle = "Your Registration has been confirmed.";
+                const successMessage = `Please Log in with the Email ID and Password you mentioned.
+                                        <br><br>Please join this WhatsApp Community for further updates:
+                                        <a href="https://chat.whatsapp.com/G8Hx7aLAKGcE4TVpue3m2E" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-semibold">https://chat.whatsapp.com/G8Hx7aLAKGcE4TVpue3m2E</a>`;
+                showMessageModal(successTitle, successMessage);
+                registerModal.style.display = 'none'; // Close modal on success
+            } catch (error) {
+                console.error("Registration error:", error);
+                let errorMessage = "An unknown error occurred during registration.";
+                if (error.code) {
+                    switch (error.code) {
+                        case 'auth/email-already-in-use':
+                            errorMessage = 'The email address is already in use by another account.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = 'The email address is not valid.';
+                            break;
+                        case 'auth/operation-not-allowed':
+                            errorMessage = 'Email/password accounts are not enabled. Please contact support.';
+                            break;
+                        case 'auth/weak-password':
+                            errorMessage = 'The password is too weak. Please use at least 6 characters.';
+                            break;
+                        default:
+                            errorMessage = `Registration failed: ${error.message}`;
+                    }
+                }
+                registerMessage.textContent = errorMessage;
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // Toggle from Login to Register
+        toggleToRegisterBtn.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+            showRegisterModal();
+        });
+
+        // Handle "Other" university selection
+        regUniversitySelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Other') {
+                otherUniversityDiv.classList.remove('hidden');
+                otherUniversityInput.setAttribute('required', 'true');
+            } else {
+                otherUniversityDiv.classList.add('hidden');
+                otherUniversityInput.removeAttribute('required');
+                otherUniversityInput.value = ''; // Clear input if not "Other"
+            }
+        });
+
+        // Close Login Modal
+        closeLoginModalBtn.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        // Close Register Modal
+        closeRegisterModalBtn.addEventListener('click', () => {
+            registerModal.style.display = 'none';
+        });
+
+        // Close Message Modal
+        closeMessageModalBtn.addEventListener('click', () => {
+            messageModal.style.display = 'none';
+        });
+        messageModalOkBtn.addEventListener('click', () => {
+            messageModal.style.display = 'none';
+        });
+
+        // Close AI Query Modal
+        closeAiQueryModalBtn.addEventListener('click', () => {
+            hideAiQueryModal();
+        });
+
+        // Close Video Modal
+        closeVideoModalBtn.addEventListener('click', () => {
+            hideVideoModal();
+        });
+
+        // Handle Logout
+        async function handleLogout() {
+            showLoading();
+            try {
+                await signOut(auth);
+                showMessageModal("Success", "Logged out successfully!");
+            } catch (error) {
+                console.error("Logout error:", error);
+                showMessageModal("Logout Error", `Failed to log out: ${error.message}`);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Handle Main Register Button Click (opens register modal if not logged in)
+        mainRegisterButton.addEventListener('click', () => {
+            if (!userId) {
+                showRegisterModal(); // Show register modal
+            } else {
+                // If already logged in, show a message and scroll to courses
+                showMessageModal("Already Logged In", "You are already logged in. Please select a course to enroll below, or go to 'My Courses' to access your content.");
+                showSection(coursesEnrollmentSection); // Show enrollment section
+                coursesEnrollmentSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // Function to populate My Courses content
+        async function populateMyCoursesContent() {
+            // Populate E-Books (Universal)
+            if (ebooksData.length > 0) {
+                ebooksList.innerHTML = '';
+                ebooksData.forEach(ebook => {
+                    const ebookCard = `
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm border border-gray-200 text-left">
+                            <h5 class="text-lg font-semibold text-gray-800">${ebook.topic}</h5>
+                            <a href="${ebook.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium text-sm mt-2">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0113 3.414L16.586 7A2 2 0 0118 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 2h2v2H6V6zm4 0h2v2h-2V6zm4 0h2v2h-2V6z" clip-rule="evenodd"></path></svg>
+                                Go to files
+                            </a>
+                        </div>
+                    `;
+                    ebooksList.innerHTML += ebookCard;
+                });
+            }
+
+            // Populate My Enrolled Courses & Course-Specific Content
+            if (!userId) {
+                mySpecificCourseContent.innerHTML = '';
+                noSpecificMaterialsMessage.classList.remove('hidden');
+                return;
+            }
+
+            mySpecificCourseContent.innerHTML = ''; // Clear previous
+            noSpecificMaterialsMessage.classList.add('hidden'); // Hide message initially
+
+            try {
+                const userEnrollmentsRef = collection(db, `artifacts/${appId}/users/${userId}/enrollments`);
+                const querySnapshot = await getDocs(userEnrollmentsRef); // Get enrolled courses
+
+                if (querySnapshot.empty) {
+                    noSpecificMaterialsMessage.classList.remove('hidden');
+                } else {
+                    querySnapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        const courseType = data.courseType;
+                        const semester = data.semester;
+
+                        const content = courseContentData[courseType] && courseContentData[courseType][semester]
+                            ? courseContentData[courseType][semester]
+                            : { liveClassLink: '#', recordedVideos: [], studyMaterialLink: '#' }; // Default if data is missing
+
+                        let recordedVideosHtml = '';
+                        if (content.recordedVideos && content.recordedVideos.length > 0) {
+                            recordedVideosHtml = `
+                                <h5 class="text-lg font-semibold text-red-700 mt-4 mb-2">Recorded Classes:</h5>
+                                <div class="grid grid-cols-1 gap-2">
+                            `;
+                            content.recordedVideos.forEach(video => {
+                                recordedVideosHtml += `
+                                    <div class="bg-gray-100 rounded-md p-3 shadow-sm border border-gray-200 text-left">
+                                        <h6 class="text-md font-medium text-gray-800">${video.title}</h6>
+                                        <p class="text-gray-600 text-xs mb-1">Date: ${video.date}</p>
+                                        <button class="watch-video-btn inline-flex items-center text-red-600 hover:text-red-800 font-medium text-xs" data-youtube-id="${video.youtubeId}">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057 .458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+                                            Watch Video
+                                        </button>
+                                    </div>
+                                `;
+                            });
+                            recordedVideosHtml += `</div>`;
+                        } else {
+                            recordedVideosHtml = `<p class="text-gray-600 text-sm mt-4">No recorded classes available for this course yet.</p>`;
+                        }
+
+
+                        const courseCard = `
+                            <div class="bg-gray-50 rounded-lg p-6 shadow-sm border border-green-200 text-left">
+                                <h5 class="text-xl font-bold text-green-700 mb-2">${courseType} Physics - Semester ${semester}</h5>
+                                <p class="text-gray-600 text-sm mb-2">Enrolled on: ${new Date(data.enrolledAt.toDate()).toLocaleDateString()}</p>
+
+                                <h6 class="text-lg font-semibold text-blue-700 mt-4 mb-2">Live Class:</h6>
+                                <a href="${content.liveClassLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 text-sm">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                                    Join Live Class
+                                </a>
+
+                                ${recordedVideosHtml}
+
+                                <h6 class="text-lg font-semibold text-blue-700 mt-4 mb-2">Study Materials:</h6>
+                                <a href="${content.studyMaterialLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm mt-2">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0113 3.414L16.586 7A2 2 0 0118 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 2h2v2H6V6zm4 0h2v2h-2V6zm4 0h2v2h-2V6z" clip-rule="evenodd"></path></svg>
+                                    Go to Study Materials
+                                </a>
+                            </div>
+                        `;
+                        mySpecificCourseContent.innerHTML += courseCard;
+                    });
+
+                    // Attach event listeners to the newly created video buttons
+                    document.querySelectorAll('#my-specific-course-content .watch-video-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const youtubeId = e.target.dataset.youtubeId;
+                            showVideoModal(youtubeId);
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error("Error populating specific course materials:", error);
+                mySpecificCourseContent.innerHTML = `<p class="text-red-500">Error loading course content: ${error.message}</p>`;
+            }
+        }
+
+
+        // Check if user has enrolled courses and update My Courses nav item visibility
+        async function checkAndPopulateMyCourses() {
+            if (!userId) {
+                myCoursesNavItem.classList.add('hidden');
+                return;
+            }
+
+            showLoading();
+            try {
+                const userEnrollmentsRef = collection(db, `artifacts/${appId}/users/${userId}/enrollments`);
+                const querySnapshot = await getDocs(userEnrollmentsRef); // Use getDocs for a one-time check
+
+                if (!querySnapshot.empty) {
+                    hasEnrolledCourses = true;
+                    myCoursesNavItem.classList.remove('hidden'); // Show My Courses nav item
+                    populateMyCoursesContent(); // Populate content when user is logged in and has courses
+                } else {
+                    hasEnrolledCourses = false;
+                    myCoursesNavItem.classList.add('hidden'); // Hide My Courses nav item
+                }
+            } catch (error) {
+                console.error("Error checking enrolled courses:", error);
+                // Even on error, hide the My Courses nav item to avoid confusion
+                myCoursesNavItem.classList.add('hidden');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Handle Course Enrollment (updated to call checkAndPopulateMyCourses)
+        document.querySelectorAll('.enroll-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                if (!userId) {
+                    showMessageModal("Login Required", "Please log in or register to enroll in a course.");
+                    showLoginModal();
+                    return;
+                }
+
+                const courseType = e.target.dataset.courseType;
+                const semester = e.target.dataset.semester;
+
+                showLoading();
+                try {
+                    const userEnrollmentDocRef = doc(db, `artifacts/${appId}/users/${userId}/enrollments`, `${courseType}-${semester}`);
+
+                    const docSnap = await getDoc(userEnrollmentDocRef);
+                    if (docSnap.exists()) {
+                        showMessageModal("Already Enrolled", `You are already enrolled in ${courseType} Physics - Semester ${semester}.`);
+                        hideLoading();
+                        return;
+                    }
+
+                    await setDoc(userEnrollmentDocRef, {
+                        courseType: courseType,
+                        semester: semester,
+                        enrolledAt: new Date(),
+                        status: 'active'
+                    });
+                    showMessageModal("Success", `Successfully enrolled in ${courseType} Physics - Semester ${semester}!`);
+                    checkAndPopulateMyCourses(); // Re-check and update My Courses nav item after enrollment
+                } catch (error) {
+                    console.error("Enrollment error:", error);
+                    showMessageModal("Enrollment Failed", `Could not enroll in the course: ${error.message}`);
+                } finally {
+                    hideLoading();
+                }
+            });
+        });
+
+        // Handle AI Query Submission
+        aiSubmitBtn.addEventListener('click', async () => {
+            const query = aiQueryInput.value.trim();
+            if (!query) {
+                aiResponseArea.innerHTML = '<p class="text-red-500">Please enter a question.</p>';
+                return;
+            }
+
+            aiResponseArea.innerHTML = ''; // Clear previous response
+            aiLoadingSpinner.classList.remove('hidden'); // Show spinner
+
+            let chatHistory = [];
+            const prompt = `Explain the following physics concept clearly and concisely, suitable for a BSc Physics student: "${query}"`;
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Keep this empty, Canvas will inject the API key
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API error: ${response.status} - ${errorData.error.message || response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    aiResponseArea.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+                } else {
+                    aiResponseArea.innerHTML = '<p class="text-red-500">Could not get a valid response from the AI. Please try again.</p>';
+                }
+            } catch (error) {
+                console.error("Gemini API call failed:", error);
+                aiResponseArea.innerHTML = `<p class="text-red-500">Error: ${error.message}. Please try again.</p>`;
+            } finally {
+                aiLoadingSpinner.classList.add('hidden');
+            }
+        });
+
+        // Navigation event listeners
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    showSection(targetSection);
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Attach AI button listener to the main AI button in My Courses
+        document.querySelector('#my-courses-content-section .ask-ai-btn').addEventListener('click', () => {
+            showAiQueryModal(); // Call with default values for general AI query
+        });
+
+
+        // Initialize Firebase and content on window load
+        window.onload = initializeFirebase;
+
+    </script>
+</body>
+</html>
