@@ -352,7 +352,7 @@
 
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center text-sm">
-            <p>© 2025 SG Classes. All rights reserved.</p>
+            <p>© 2024 SG Classes. All rights reserved.</p>
             <p class="mt-2">Clarity in Concepts, Excellence in Results.</p>
         </div>
     </footer>
@@ -507,7 +507,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Global Firebase variables
@@ -590,7 +590,7 @@
         const courseContentData = {
             "Major": {
                 "1": {
-                    liveClassLink: "https://meet.google.com/kco-uudp-xku",
+                    liveClassLink: "https://meet.google.com/major-sem1-live",
                     recordedVideos: [
                         { title: "Major Sem 1 - Introduction to Physics", date: "Jan 10, 2024", youtubeId: "dQw4w9WgXcQ" }
                     ],
@@ -739,32 +739,23 @@
                 db = getFirestore(app);
                 auth = getAuth(app);
 
-                // Authenticate with custom token or anonymously
+                // Attempt to sign in with custom token only if available
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     try {
                         await signInWithCustomToken(auth, __initial_auth_token);
                         console.log("Signed in with custom token.");
                     } catch (customTokenError) {
                         console.error("Error signing in with custom token:", customTokenError);
-                        // If custom token fails, try anonymous sign-in
-                        try {
-                            await signInAnonymously(auth);
-                            showMessageModal("Authentication Warning", "Failed to sign in with custom token. You have been signed in anonymously. Please contact support if you expected a full login.");
-                        } catch (anonymousError) {
-                            console.error("Error signing in anonymously:", anonymousError);
-                            throw anonymousError; // Re-throw to be caught by the main catch block
-                        }
+                        // If custom token fails, do NOT fall back to anonymous sign-in.
+                        // The onAuthStateChanged listener will handle the unauthenticated state.
+                        showMessageModal("Authentication Failed", "Automatic login failed. Please log in or register to access full features.");
                     }
                 } else {
-                    try {
-                        await signInAnonymously(auth);
-                        console.log("Signed in anonymously.");
-                    } catch (anonymousError) {
-                        console.error("Error signing in anonymously:", anonymousError);
-                        throw anonymousError; // Re-throw to be caught by the main catch block
-                    }
+                    // If no custom token, simply proceed. User will be null, and UI will show login/register.
+                    console.log("No initial custom token. Proceeding as unauthenticated.");
                 }
 
+                // This listener will always fire after initial auth state is determined
                 onAuthStateChanged(auth, async (user) => {
                     userId = user ? user.uid : null;
                     isAuthReady = true; // Auth state has been determined
@@ -785,7 +776,7 @@
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
                 isAuthReady = true; // Ensure UI is not stuck loading even if init fails
-                hideLoading();
+                hideLoading(); // Always hide loading overlay on init completion/failure
 
                 let errorMessage = `Failed to initialize Firebase: ${error.message}`;
                 if (error.code) {
@@ -796,9 +787,7 @@
                         case 'auth/custom-token-mismatch':
                             errorMessage = "The authentication token provided is invalid. This usually means there's an issue with the system-generated token. Please try refreshing the page. If the issue persists, contact support.";
                             break;
-                        case 'auth/admin-restricted-operation':
-                            errorMessage = "Anonymous authentication is not enabled for this Firebase project. Please enable it in your Firebase Console under 'Authentication' -> 'Sign-in method' -> 'Anonymous'.";
-                            break;
+                        // Removed 'auth/admin-restricted-operation' case as anonymous sign-in is no longer attempted.
                         default:
                             errorMessage = `Failed to initialize Firebase: ${error.message}`;
                     }
@@ -1058,7 +1047,7 @@
 
             try {
                 const userEnrollmentsRef = collection(db, `artifacts/${appId}/users/${userId}/enrollments`);
-                const querySnapshot = await getDocs(userEnrollmentsRef); // Get enrolled courses
+                const querySnapshot = await getDocs(userEnrollmentsRef);
 
                 if (querySnapshot.empty) {
                     noSpecificMaterialsMessage.classList.remove('hidden');
