@@ -127,6 +127,10 @@
 </head>
 <body class="antialiased">
 
+    <div id="loading-overlay" class="hidden">
+        <p>Loading...</p>
+    </div>
+
     <header class="bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg py-4 md:py-6">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
             <div class="flex items-center mb-4 md:mb-0">
@@ -142,7 +146,9 @@
                     <li id="my-courses-nav-item" class="hidden"><a href="#my-courses-content-section" class="hover:text-blue-200 transition duration-300 font-medium">My Courses</a></li>
                     <li><a href="#contact" class="hover:text-blue-200 transition duration-300 font-medium">Contact</a></li>
                     <li id="auth-buttons" class="flex space-x-4 ml-6">
-                        </li>
+                        <button id="login-btn" class="bg-white text-blue-600 hover:bg-blue-100 py-2 px-4 rounded-md font-medium transition duration-300">Login</button>
+                        <button id="register-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md font-medium transition duration-300">Register</button>
+                    </li>
                     <li id="user-info" class="hidden flex items-center space-x-2 ml-6">
                         </li>
                 </ul>
@@ -252,7 +258,7 @@
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
                         <div>
                             <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 8</h5>
-                            <p class="text-gray-600 text-sm mb-4">General Relativity, Cosmology, Project Work, etc.</p>
+                            <p class="text-600 text-sm mb-4">General Relativity, Cosmology, Project Work, etc.</p>
                         </div>
                         <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="8">Enroll</button>
                     </div>
@@ -504,28 +510,23 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-
-
         // Global Firebase variables
         let app;
-        let db; // Initialize Firestore after app is initialized
-    	let auth;    // Initialize Auth after app is initialized
-    	let userId = null;
+        let db;
+        let auth;
+        let userId = null;
         let isAuthReady = false; // Flag to ensure auth is ready before Firestore ops
         let hasEnrolledCourses = false; // Flag to track if user has any enrolled courses
 
         // YOUR ACTUAL FIREBASE CONFIGURATION GOES HERE
-        // Paste your specific appId here:
         const appId = '1:922766409483:web:b68fcad43be17871656c0e';
-
-        // Paste your entire firebaseConfig object here:
         const firebaseConfig = {
-          apiKey: "AIzaSyD941LN1KL1_SywM09MA",
+          apiKey: "AIzaSyCO4OuGHlnelszOf31LOsl5I_SvKUblMkA", // Corrected API Key
           authDomain: "sg-classes-10a2f.firebaseapp.com",
           projectId: "sg-classes-10a2f",
           storageBucket: "sg-classes-10a2f.firebasestorage.app",
           messagingSenderId: "922766409483",
-          appId: "1:922766409483:web:b68fcad43be17871656c0e", // This appId should match the appId above!
+          appId: "1:922766409483:web:b68fcad43be17871656c0e",
           measurementId: "G-EGJXPLCTPM"
         };
 
@@ -560,7 +561,7 @@
         // My Courses specific elements
         const myCoursesNavItem = document.getElementById('my-courses-nav-item');
         const ebooksList = document.getElementById('ebooks-list');
-        const mySpecificCourseContent = document.getElementById('my-specific-course-content'); // Changed ID
+        const mySpecificCourseContent = document.getElementById('my-specific-course-content');
         const noSpecificMaterialsMessage = document.getElementById('no-specific-materials-message');
 
         // Message Modal elements
@@ -708,7 +709,7 @@
 
         // Function to show video modal
         function showVideoModal(youtubeId) {
-            videoIframe.src = `http://www.youtube.com/embed/${youtubeId}?autoplay=1`; // Autoplay video
+            videoIframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`; // Corrected YouTube embed URL
             videoModal.style.display = 'flex';
         }
 
@@ -734,50 +735,83 @@
         async function initializeFirebase() {
             showLoading();
             try {
-                // The appId and firebaseConfig are now directly defined above
-                // No need for typeof __app_id or __firebase_config checks here
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
 
                 // Authenticate with custom token or anonymously
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                        console.log("Signed in with custom token.");
+                    } catch (customTokenError) {
+                        console.error("Error signing in with custom token:", customTokenError);
+                        // If custom token fails, try anonymous sign-in
+                        try {
+                            await signInAnonymously(auth);
+                            showMessageModal("Authentication Warning", "Failed to sign in with custom token. You have been signed in anonymously. Please contact support if you expected a full login.");
+                        } catch (anonymousError) {
+                            console.error("Error signing in anonymously:", anonymousError);
+                            throw anonymousError; // Re-throw to be caught by the main catch block
+                        }
+                    }
                 } else {
-                    await signInAnonymously(auth);
+                    try {
+                        await signInAnonymously(auth);
+                        console.log("Signed in anonymously.");
+                    } catch (anonymousError) {
+                        console.error("Error signing in anonymously:", anonymousError);
+                        throw anonymousError; // Re-throw to be caught by the main catch block
+                    }
                 }
 
                 onAuthStateChanged(auth, async (user) => {
+                    userId = user ? user.uid : null;
+                    isAuthReady = true; // Auth state has been determined
                     if (user) {
-                        userId = user.uid;
-                        isAuthReady = true;
                         console.log("Firebase Auth Ready. User ID:", userId);
                         updateAuthUI(user);
-                        await checkAndPopulateMyCourses(); // Check enrollment and show/hide My Courses nav item
-                        showSection(homeSection); // Default to home on login
+                        await checkAndPopulateMyCourses();
+                        showSection(homeSection);
                     } else {
-                        userId = null;
-                        isAuthReady = true;
                         console.log("No user signed in.");
                         updateAuthUI(null);
-                        myCoursesNavItem.classList.add('hidden'); // Hide My Courses nav item
-                        showSection(homeSection); // Default to home on logout
+                        myCoursesNavItem.classList.add('hidden');
+                        showSection(homeSection);
                     }
                     hideLoading();
                 });
 
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
-                showMessageModal("Initialization Error", `Failed to initialize Firebase: ${error.message}`);
+                isAuthReady = true; // Ensure UI is not stuck loading even if init fails
                 hideLoading();
+
+                let errorMessage = `Failed to initialize Firebase: ${error.message}`;
+                if (error.code) {
+                    switch (error.code) {
+                        case 'auth/api-key-expired':
+                            errorMessage = "Your Firebase API key has expired. Please renew it in your Firebase project settings and update the 'apiKey' in the code.";
+                            break;
+                        case 'auth/custom-token-mismatch':
+                            errorMessage = "The authentication token provided is invalid. This usually means there's an issue with the system-generated token. Please try refreshing the page. If the issue persists, contact support.";
+                            break;
+                        case 'auth/admin-restricted-operation':
+                            errorMessage = "Anonymous authentication is not enabled for this Firebase project. Please enable it in your Firebase Console under 'Authentication' -> 'Sign-in method' -> 'Anonymous'.";
+                            break;
+                        default:
+                            errorMessage = `Failed to initialize Firebase: ${error.message}`;
+                    }
+                }
+                showMessageModal("Initialization Error", errorMessage);
             }
         }
 
         // Update UI based on authentication state
         function updateAuthUI(user) {
             if (user) {
-                authButtonsContainer.classList.add('hidden');
-                userInfoContainer.classList.remove('hidden');
+                authButtonsContainer.classList.add('hidden'); // Hide login/register buttons
+                userInfoContainer.classList.remove('hidden'); // Show user info
                 userInfoContainer.innerHTML = `
                     <span class="text-white text-sm">Welcome, ${user.email || 'Guest'}!</span>
                     <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md font-medium transition duration-300">Logout</button>
@@ -785,14 +819,9 @@
                 `;
                 document.getElementById('logout-btn').addEventListener('click', handleLogout);
             } else {
-                authButtonsContainer.classList.remove('hidden');
-                userInfoContainer.classList.add('hidden');
-                authButtonsContainer.innerHTML = `
-                    <button id="login-btn" class="bg-white text-blue-600 hover:bg-blue-100 py-2 px-4 rounded-md font-medium transition duration-300">Login</button>
-                    <button id="register-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md font-medium transition duration-300">Register</button>
-                `;
-                document.getElementById('login-btn').addEventListener('click', showLoginModal);
-                document.getElementById('register-btn').addEventListener('click', showRegisterModal);
+                authButtonsContainer.classList.remove('hidden'); // Show login/register buttons
+                userInfoContainer.classList.add('hidden'); // Hide user info
+                // Buttons are already in HTML, no need to set innerHTML here
             }
         }
 
@@ -879,7 +908,7 @@
                 const newUserId = newUser.uid;
 
                 // 2. Store additional user data in Firestore
-                const userProfileRef = doc(db, `artifacts/${appId}/users/${newUserId}/profile`, "details"); // Use the correct appId variable
+                const userProfileRef = doc(db, `artifacts/${appId}/users/${newUserId}/profile`, "details");
                 await setDoc(userProfileRef, {
                     name: name,
                     email: email,
@@ -1115,19 +1144,18 @@
             showLoading();
             try {
                 const userEnrollmentsRef = collection(db, `artifacts/${appId}/users/${userId}/enrollments`);
-                const querySnapshot = await getDocs(userEnrollmentsRef); // Use getDocs for a one-time check
+                const querySnapshot = await getDocs(userEnrollmentsRef);
 
                 if (!querySnapshot.empty) {
                     hasEnrolledCourses = true;
-                    myCoursesNavItem.classList.remove('hidden'); // Show My Courses nav item
-                    populateMyCoursesContent(); // Populate content when user is logged in and has courses
+                    myCoursesNavItem.classList.remove('hidden');
+                    populateMyCoursesContent();
                 } else {
                     hasEnrolledCourses = false;
-                    myCoursesNavItem.classList.add('hidden'); // Hide My Courses nav item
+                    myCoursesNavItem.classList.add('hidden');
                 }
             } catch (error) {
                 console.error("Error checking enrolled courses:", error);
-                // Even on error, hide the My Courses nav item to avoid confusion
                 myCoursesNavItem.classList.add('hidden');
             } finally {
                 hideLoading();
@@ -1164,7 +1192,7 @@
                         status: 'active'
                     });
                     showMessageModal("Success", `Successfully enrolled in ${courseType} Physics - Semester ${semester}!`);
-                    checkAndPopulateMyCourses(); // Re-check and update My Courses nav item after enrollment
+                    checkAndPopulateMyCourses();
                 } catch (error) {
                     console.error("Enrollment error:", error);
                     showMessageModal("Enrollment Failed", `Could not enroll in the course: ${error.message}`);
@@ -1182,15 +1210,15 @@
                 return;
             }
 
-            aiResponseArea.innerHTML = ''; // Clear previous response
-            aiLoadingSpinner.classList.remove('hidden'); // Show spinner
+            aiResponseArea.innerHTML = '';
+            aiLoadingSpinner.classList.remove('hidden');
 
             let chatHistory = [];
             const prompt = `Explain the following physics concept clearly and concisely, suitable for a BSc Physics student: "${query}"`;
             chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
             const payload = { contents: chatHistory };
-            const apiKey = ""; // Keep this empty, Canvas will inject the API key
+            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
             try {
@@ -1237,9 +1265,21 @@
 
         // Attach AI button listener to the main AI button in My Courses
         document.querySelector('#my-courses-content-section .ask-ai-btn').addEventListener('click', () => {
-            showAiQueryModal(); // Call with default values for general AI query
+            showAiQueryModal();
         });
 
+        // Attach event listeners for the login and register buttons (now static in HTML)
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+
+            if (loginBtn) {
+                loginBtn.addEventListener('click', showLoginModal);
+            }
+            if (registerBtn) {
+                registerBtn.addEventListener('click', showRegisterModal);
+            }
+        });
 
         // Initialize Firebase and content on window load
         window.onload = initializeFirebase;
