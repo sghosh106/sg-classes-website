@@ -500,23 +500,27 @@
     </div>
 
     <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+    //import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    //import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // Your web app's Firebase configuration (COPY THIS ENTIRE BLOCK EXACTLY)
     const firebaseConfig = {
-      apiKey: "AIzaSyD941LN1KL1_SywM09MA",
-      authDomain: "sg-classes-10a2f.firebaseapp.com",
-      projectId: "sg-classes-10a2f",
-      storageBucket: "sg-classes-10a2f.appspot.com",
-      messagingSenderId: "922764994483",
-      appId: "1:922764994483:web:069fcad8e17871658c8e",
-      measurementId: "G-EGLQPLXCTM"
-    };
+  apiKey: "AIzaSyCO4OuGHlnelszOf31LOsl5I_SvKUblMkA",
+  authDomain: "sg-classes-10a2f.firebaseapp.com",
+  projectId: "sg-classes-10a2f",
+  storageBucket: "sg-classes-10a2f.firebasestorage.app",
+  messagingSenderId: "922766409483",
+  appId: "1:922766409483:web:b68fcad43be17871656c0e",
+  measurementId: "G-EGJXPLCTPM"
+};
 
-    // Initialize Firebase (THIS CALL IS CRUCIAL)
-    const app = initializeApp(firebaseConfig);
+    // Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
     // Global Firebase variables
     let db = getFirestore(app); // Initialize Firestore after app is initialized
