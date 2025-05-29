@@ -216,7 +216,7 @@
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-blue-100 flex flex-col justify-between">
                         <div>
                             <h5 class="text-xl font-bold text-gray-800 mb-2">Semester 2</h5>
-                            <p class="text-gray-600 text-sm mb-4">Classical Mechanics, Electronics, etc.</p>
+                            <p class="text-gray-600 text-sm mb-4">Optics, Oscillations, Waves, etc.</p>
                         </div>
                         <button class="enroll-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4" data-course-type="Major" data-semester="2">Enroll</button>
                     </div>
@@ -352,7 +352,7 @@
 
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center text-sm">
-            <p>© 2025 SG Classes. All rights reserved.</p>
+            <p>© 2024 SG Classes. All rights reserved.</p>
             <p class="mt-2">Clarity in Concepts, Excellence in Results.</p>
         </div>
     </footer>
@@ -428,7 +428,6 @@
                         <option value="">Select your University</option>
                         <option value="Burdwan University">Burdwan University</option>
                         <option value="Kalyani University">Kalyani University</option>
-                        <option value="Jadavpur University">Jadavpur University</option>
                         <option value="Calcutta University">Calcutta University</option>
                         <option value="West Bengal State University">West Bengal State University</option>
                         <option value="Rabindra Bharati University">Rabindra Bharati University</option>
@@ -483,7 +482,7 @@
             <h3 class="text-2xl font-bold text-gray-800 mb-6">Ask the AI Explainer ✨</h3>
             <p id="ai-modal-context" class="text-gray-600 text-sm mb-4"></p>
             <textarea id="ai-query-input" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[80px] mb-4" placeholder="e.g., Explain the photoelectric effect in simple terms."></textarea>
-            <button id="ai-submit-btn" class="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 transition duration-300">Get Explanation</button>
+            <button type="button" id="ai-submit-btn" class="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 transition duration-300">Get Explanation</button>
             <div id="ai-response-area" class="mt-6 p-4 bg-gray-50 rounded-md text-left text-gray-800 border border-gray-200 max-h-60 overflow-y-auto">
                 <p class="text-gray-500">Your AI explanation will appear here...</p>
             </div>
@@ -509,7 +508,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
 
         // Global Firebase variables
         let app;
@@ -596,16 +596,17 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_1_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_1_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "2": {
-                    liveClassLink: "https://meet.google.com/hfz-ktow-rfx",
+                    liveClassLink: "https://meet.google.com/major-sem2-live",
                     recordedVideos: [
                         { title: "Classical Mechanics- Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_2_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_2_STUDY_MATERIALS_LINK",
+                    classTiming: "Wednesday and Sunday from 8:00 pm"
                 },
                 "3": {
                     liveClassLink: "https://meet.google.com/major-sem3-live",
@@ -613,8 +614,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_3_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_3_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "4": {
                     liveClassLink: "https://meet.google.com/major-sem4-live",
@@ -622,8 +623,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_4_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_4_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "5": {
                     liveClassLink: "https://meet.google.com/major-sem5-live",
@@ -631,8 +632,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_5_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_5_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "6": {
                     liveClassLink: "https://meet.google.com/major-sem6-live",
@@ -640,8 +641,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_6_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_6_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "7": {
                     liveClassLink: "https://meet.google.com/major-sem7-live",
@@ -649,8 +650,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_7_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_7_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "8": {
                     liveClassLink: "https://meet.google.com/major-sem8-live",
@@ -658,8 +659,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_8_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MAJOR_SEM_8_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 }
             },
             "Minor": {
@@ -669,8 +670,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_1_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_1_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "2": {
                     liveClassLink: "https://meet.google.com/minor-sem2-live",
@@ -678,8 +679,8 @@
                         { title: "Demo Video- Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_2_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_2_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "3": {
                     liveClassLink: "https://meet.google.com/minor-sem3-live",
@@ -687,8 +688,8 @@
                         { title: "Demo Video- Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video- Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_3_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_3_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 },
                 "4": {
                     liveClassLink: "https://meet.google.com/minor-sem4-live",
@@ -696,8 +697,8 @@
                         { title: "Demo Video - Everything about Dimensions", date: "May 23, 2025", youtubeId: "ftRyakWdMeg" },
                         { title: "Demo Video - Multiverse Explained", date: "Feb 15, 2024", youtubeId: "pTbNnkf2LVg" }
                     ],
-
-                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_4_STUDY_MATERIALS_LINK"
+                    studyMaterialLink: "https://drive.google.com/drive/folders/MINOR_SEM_4_STUDY_MATERIALS_LINK",
+                    classTiming: "To be announced"
                 }
             }
         };
@@ -1102,7 +1103,7 @@
 
                         const content = courseContentData[courseType] && courseContentData[courseType][semester]
                             ? courseContentData[courseType][semester]
-                            : { liveClassLink: '#', recordedVideos: [], studyMaterialLink: '#' }; // Default if data is missing
+                            : { liveClassLink: '#', recordedVideos: [], studyMaterialLink: '#', classTiming: 'Not available' }; // Default if data is missing
 
                         let recordedVideosHtml = '';
                         if (content.recordedVideos && content.recordedVideos.length > 0) {
@@ -1134,6 +1135,7 @@
                                 <p class="text-gray-600 text-sm mb-2">Enrolled on: ${new Date(data.enrolledAt.toDate()).toLocaleDateString()}</p>
 
                                 <h6 class="text-lg font-semibold text-blue-700 mt-4 mb-2">Live Class:</h6>
+                                <p class="text-gray-700 text-sm mb-2">Timing: ${content.classTiming}</p>
                                 <a href="${content.liveClassLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 text-sm">
                                     <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                                     Join Live Class
@@ -1194,7 +1196,7 @@
             }
         }
 
-        // Handle Course Enrollment (updated to call checkAndPopulateMyCourses)
+        // Handle Course Enrollment (now directly attempts enrollment, rules will validate email)
         document.querySelectorAll('.enroll-btn').forEach(button => {
             button.addEventListener('click', async (e) => {
                 if (!userId) {
@@ -1217,22 +1219,30 @@
                         return;
                     }
 
+                    // Attempt to enroll. Firestore Security Rules will check if the user's email is allowed.
                     await setDoc(userEnrollmentDocRef, {
                         courseType: courseType,
                         semester: semester,
                         enrolledAt: new Date(),
                         status: 'active'
                     });
-                    showMessageModal("Success", `Successfully enrolled in ${courseType} Physics - Semester ${semester}!`);
-                    checkAndPopulateMyCourses();
+                    showMessageModal("Enrollment Successful", `Successfully enrolled in ${courseType} Physics - Semester ${semester}!`);
+                    checkAndPopulateMyCourses(); // Refresh user's enrolled courses
                 } catch (error) {
                     console.error("Enrollment error:", error);
-                    showMessageModal("Enrollment Failed", `Could not enroll in the course: ${error.message}`);
+                    let errorMessage = "Enrollment failed.";
+                    if (error.code === 'permission-denied') {
+                        errorMessage = "Enrollment denied. Your email is not authorized for this course. Please contact the administrator to get access.";
+                    } else {
+                        errorMessage = `Enrollment failed: ${error.message}`;
+                    }
+                    showMessageModal("Enrollment Failed", errorMessage);
                 } finally {
                     hideLoading();
                 }
             });
         });
+
 
         // Handle AI Query Submission
         aiSubmitBtn.addEventListener('click', async () => {
